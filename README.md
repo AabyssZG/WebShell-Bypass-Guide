@@ -392,7 +392,7 @@ Demo：获取对应的整数值
 
 ```php
 echo intval(042);      // 34
-echo intval(0x1A);     // 2
+echo intval(0x1A);     // 26
 echo intval(42);       // 42
 echo intval(4.2);      // 4
 ```
