@@ -285,7 +285,7 @@ Demo：这个很简单，直接看就明白了
 ```php
 function myfunction($value,$key,$p)
 {
-echo "$key $p $value<br>";
+echo "The key $key $p $value<br>";
 }
 $a=array("a"=>"red","b"=>"green","c"=>"blue");
 array_walk($a,"myfunction","has the value");
