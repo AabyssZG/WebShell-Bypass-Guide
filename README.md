@@ -2,7 +2,7 @@
 
 ![WebShell-Bypass-Guide](https://socialify.git.ci/AabyssZG/WebShell-Bypass-Guide/image?description=1&font=Jost&forks=1&issues=1&language=1&logo=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F54609266%3Fv%3D4&name=1&owner=1&pattern=Floating%20Cogs&stargazers=1&theme=Dark)
 
-**手册版本号：V1.0-20230306**
+**手册版本号：V1.2-20230610**
 
 这是一本能让你从零开始学习PHP的WebShell免杀的手册，同时我会在内部群迭代更新
 
@@ -194,6 +194,18 @@ __METHOD__     //当前所属的方法
 
 - PHP中函数名、方法名、类名不区分大小写，常量和变量区分大小写
 - 在某些环境中，`<?php  ?>` 没有闭合会导致无法正常运作
+
+### 0.7 PHP标记几种写法
+
+其中第一和第二种为常用的写法
+```php
+第一种：<?php ?>
+第二种：<?php
+第三种：<? ?>
+第四种：<% %>
+第五种：<script language="php"></script>
+```
+第三种和第四种为短标识，当使用他们需要开启 `php.ini` 文件中的 `short_open_tag` ，不然会报错
 
 
 ## 1# 回调类型函数
