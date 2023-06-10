@@ -1314,3 +1314,9 @@ system('whoami');
 最后，也欢迎各位师傅关注我们团队公众号啦
 
 ![微信公众号.png](./img/微信公众号.bmp)
+
+
+# Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=AabyssZG/WebShell-Bypass-Guide&type=Date)](https://star-history.com/#AabyssZG/WebShell-Bypass-Guide&Date)
+
