@@ -1316,7 +1316,19 @@ system('whoami');
 ![微信公众号.png](./img/微信公众号.bmp)
 
 
-# Star History
+# 五，感谢各位师傅
+
+## Stargazers
+
+[![Stargazers repo roster for @AabyssZG/WebShell-Bypass-Guide](https://reporoster.com/stars/AabyssZG/WebShell-Bypass-Guide)](https://github.com/AabyssZG/WebShell-Bypass-Guide/stargazers)
+
+
+## Forkers
+
+[![Forkers repo roster for @AabyssZG/WebShell-Bypass-Guide](https://reporoster.com/forks/AabyssZG/WebShell-Bypass-Guide)](https://github.com/AabyssZG/WebShell-Bypass-Guide/network/members)
+
+
+## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=AabyssZG/WebShell-Bypass-Guide&type=Date)](https://star-history.com/#AabyssZG/WebShell-Bypass-Guide&Date)
 
