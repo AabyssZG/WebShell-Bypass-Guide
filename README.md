@@ -1,4 +1,5 @@
 # PHP从零学习到Webshell免杀手册
+### 临渊羡鱼，不如退而结网；扬汤止沸，不如去火抽薪。
 
 ![WebShell-Bypass-Guide](https://socialify.git.ci/AabyssZG/WebShell-Bypass-Guide/image?description=1&font=Jost&forks=1&issues=1&language=1&logo=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F54609266%3Fv%3D4&name=1&owner=1&pattern=Floating%20Cogs&stargazers=1&theme=Dark)
 
