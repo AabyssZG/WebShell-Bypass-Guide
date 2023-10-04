@@ -124,7 +124,7 @@ print_r($result);
 
 数组输出为：
 
-```
+```php
 Array ( [firstname] => Aabyss [lastname] => ZG [age] => 21 )
 ```
 
