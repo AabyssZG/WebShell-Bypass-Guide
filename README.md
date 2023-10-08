@@ -9,6 +9,8 @@
 
 博客地址： [https://blog.zgsec.cn/archives/197.html](https://blog.zgsec.cn/archives/197.html) 
 
+SeeBug Paper地址：[https://paper.seebug.org/3044/](https://paper.seebug.org/3044/)
+
 **如果师傅们觉得不错，欢迎给我点个Star哈哈~**
 
 有什么新的WebShell免杀姿势、手法，欢迎与我交流
