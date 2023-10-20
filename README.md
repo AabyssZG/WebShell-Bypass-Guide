@@ -7,9 +7,11 @@
 
 这是一本能让你从零开始学习PHP的WebShell免杀的手册，同时我会在内部群迭代更新
 
-博客地址： [https://blog.zgsec.cn/archives/197.html](https://blog.zgsec.cn/archives/197.html) 
+### 如何在线阅读？
 
-SeeBug Paper地址：[https://paper.seebug.org/3044/](https://paper.seebug.org/3044/)
+- 个人博客地址： [https://blog.zgsec.cn/archives/197.html](https://blog.zgsec.cn/archives/197.html)
+- SeeBug Paper地址：[https://paper.seebug.org/3044/](https://paper.seebug.org/3044/)
+- FreeBuf地址：[https://www.freebuf.com/articles/web/380751.html](https://www.freebuf.com/articles/web/380751.html)
 
 **如果师傅们觉得不错，欢迎给我点个Star哈哈~**
 
