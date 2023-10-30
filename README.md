@@ -1810,12 +1810,12 @@ Content-Length: 0
 
 ## Stargazers
 
-[![Stargazers repo roster for @AabyssZG/WebShell-Bypass-Guide](https://reporoster.com/stars/AabyssZG/WebShell-Bypass-Guide)](https://github.com/AabyssZG/WebShell-Bypass-Guide/stargazers)
+[![Stargazers repo roster for @AabyssZG/WebShell-Bypass-Guide](http://reporoster.com/stars/AabyssZG/WebShell-Bypass-Guide)](https://github.com/AabyssZG/WebShell-Bypass-Guide/stargazers)
 
 
 ## Forkers
 
-[![Forkers repo roster for @AabyssZG/WebShell-Bypass-Guide](https://reporoster.com/forks/AabyssZG/WebShell-Bypass-Guide)](https://github.com/AabyssZG/WebShell-Bypass-Guide/network/members)
+[![Forkers repo roster for @AabyssZG/WebShell-Bypass-Guide](http://reporoster.com/forks/AabyssZG/WebShell-Bypass-Guide)](https://github.com/AabyssZG/WebShell-Bypass-Guide/network/members)
 
 
 ## Star History
