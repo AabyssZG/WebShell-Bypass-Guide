@@ -71,7 +71,7 @@
 
 也欢迎各位师傅关注我们团队公众号啦
 
-![微信公众号.png](https://blog.zgsec.cn/usr/uploads/2023/03/2621060550.bmp)
+![微信公众号.png](https://blog.zgsec.cn/usr/uploads/2023/11/55464641.png)
 
 
 ## 3# 相关说明
