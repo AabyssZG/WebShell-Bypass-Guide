@@ -948,7 +948,7 @@ if (isset($_POST['f'])) {
 注：PHP为了防止正则表达式的拒绝服务攻击（reDOS），给 `pcre` 设定了一个回溯次数上限 `pcre.backtrack_limit`，可以通过以下代码查看当前环境下的上限：
 
 ```php
-var_dump(ini_get(‘pcre.backtrack_limit’));
+var_dump(ini_get('pcre.backtrack_limit'));
 ```
 
 回溯次数上限默认是100万，如果回溯次数超过了100万，`preg_match` 返回的便不再是0或1，而是 `false`
@@ -1016,7 +1016,7 @@ if (isset($pass)) {
 
 这里通过传入数组也可以让结果返回NULL，NULL再取反为TRUE
 
-```
+```php
 pass[]=Aabyss
 ```
 
