@@ -803,7 +803,7 @@ echo json_encode($res);
 ![PHP过滤器.png](https://blog.zgsec.cn/usr/uploads/2023/03/2236941522.png)
 
 
-# 8# PHP特性利用
+## 8# PHP特性利用
 
 ### 8.0 Tips
 
