@@ -21,7 +21,7 @@
 
 本手册已经开源，开源地址：[https://github.com/AabyssZG/WebShell-Bypass-Guide/blob/main/PHP-Webshell-ByPass-Guide.md](https://github.com/AabyssZG/WebShell-Bypass-Guide/blob/main/PHP-Webshell-ByPass-Guide.md)
 
-**手册版本号：V1.4.1-2023/10/04**
+**手册版本号：V1.4.5-2023/12/02**
 
 这是一本能让你从零开始学习PHP的WebShell免杀的手册，同时我会在内部群迭代更新
 
