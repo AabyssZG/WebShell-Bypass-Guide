@@ -3,7 +3,7 @@
 
 ![WebShell-Bypass-Guide](https://socialify.git.ci/AabyssZG/WebShell-Bypass-Guide/image?description=1&descriptionEditable=A%20manual%20for%20learning%20Webshell%20Bypass%20from%20scratch&font=Jost&forks=1&issues=1&language=1&logo=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F54609266%3Fv%3D4&name=1&owner=1&pattern=Floating%20Cogs&stargazers=1&theme=Dark)
 
-**手册版本号：V1.4.5-2023/12/02**
+**手册版本号：V1.4.6-2024/01/06**
 
 这是一本能让你从零开始学习PHP的WebShell免杀的手册，同时我会在内部群迭代更新
 
