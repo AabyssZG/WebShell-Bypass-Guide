@@ -536,7 +536,7 @@ Demo：简单来说，就是将指定编码的数字转成字符串
 
 ```php
 echo pack("C3",80,72,80);   //ASCII编码转换为PHP
-echo pack("H*",4161627973735465616d);    //16进制编码转换为AabyssTeam
+echo pack("H*","4161627973735465616d");    //16进制编码转换为AabyssTeam
 ```
 
 其他参数请参考菜鸟教程： [https://www.runoob.com/php/func-misc-pack.html](https://www.runoob.com/php/func-misc-pack.html)
