@@ -718,7 +718,7 @@ try
 {
     checkNum(2);
     // 如果抛出异常，以下文本不会输出
-    echo '如果输出该内容，说明 $number 变量';
+    echo '如果输出该内容，说明 $number 变量小于1';
 }
 // 捕获异常
 catch(Exception $e)
