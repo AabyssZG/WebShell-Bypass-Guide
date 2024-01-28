@@ -76,7 +76,7 @@
 
 ## 3# 相关说明
 
-本手册由渊龙Sec安全团队的 [`AabyssZG`](https://github.com/AabyssZG) 和 [`塔菲`](https://github.com/thebatmanfuture) 师傅共同整理
+本手册由渊龙Sec安全团队的 [`@AabyssZG`](https://github.com/AabyssZG) 和 [`@塔菲`](https://github.com/thebatmanfuture) 师傅共同整理
 
 1. **本资料仅供学习参考，严禁使用者进行未授权渗透测试！**
 2. **部分免杀思路来自互联网，欢迎各位师傅和我交流。**
