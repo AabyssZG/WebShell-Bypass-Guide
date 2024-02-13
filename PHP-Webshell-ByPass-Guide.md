@@ -11,6 +11,7 @@
 
 - 个人博客地址： [https://blog.zgsec.cn/archives/197.html](https://blog.zgsec.cn/archives/197.html)
 - SeeBug Paper地址：[https://paper.seebug.org/3044/](https://paper.seebug.org/3044/)
+- 阿里先知社区：[https://xz.aliyun.com/t/13591](https://xz.aliyun.com/t/13591)
 - FreeBuf地址：[https://www.freebuf.com/articles/web/380751.html](https://www.freebuf.com/articles/web/380751.html)
 - 奇安信攻防社区地址：[https://forum.butian.net/share/2488](https://forum.butian.net/share/2488)
 - Gitee开源地址：[https://gitee.com/AabyssZG/WebShell-Bypass-Guide](https://gitee.com/AabyssZG/WebShell-Bypass-Guide)
