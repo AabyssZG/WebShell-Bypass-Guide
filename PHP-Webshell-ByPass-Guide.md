@@ -1144,6 +1144,7 @@ a=1&b=-phpinfo()-&c=2
 - 渊龙Sec团队导航（上面啥都有）： [https://dh.aabyss.cn/](https://dh.aabyss.cn/)
 - 长亭牧云查杀： [https://stack.chaitin.com/security-challenge/webshell/index](https://stack.chaitin.com/security-challenge/webshell/index)
 - 阿里云恶意文件检测平台：[https://ti.aliyun.com/#/webshell](https://ti.aliyun.com/#/webshell)
+- 默安·昆吾WebShell检测平台：[https://ti.moresec.cn/](https://ti.moresec.cn/)
 - 阿里伏魔引擎： [https://xz.aliyun.com/zues](https://xz.aliyun.com/zues) 
 - VirusTotal： [https://www.virustotal.com/gui/home/upload](https://www.virustotal.com/gui/home/upload) 
 - 微步在线云沙箱： [https://s.threatbook.com/](https://s.threatbook.com/)
