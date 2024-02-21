@@ -3,7 +3,7 @@
 
 ![WebShell-Bypass-Guide](https://socialify.git.ci/AabyssZG/WebShell-Bypass-Guide/image?description=1&descriptionEditable=A%20manual%20for%20learning%20Webshell%20Bypass%20from%20scratch&font=Jost&forks=1&issues=1&language=1&logo=https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F54609266%3Fv%3D4&name=1&owner=1&pattern=Floating%20Cogs&stargazers=1&theme=Dark)
 
-**手册版本号：V1.4.7-2024/02/20**
+**手册版本号：V1.4.7-2024/02/21**
 
 这是一本能让你从零开始学习PHP的WebShell免杀的手册，同时我会在内部群迭代更新
 
@@ -1142,16 +1142,18 @@ a=1&b=-phpinfo()-&c=2
 ### 0.4 WebShell免杀测试
 
 - 渊龙Sec团队导航（上面啥都有）： [https://dh.aabyss.cn/](https://dh.aabyss.cn/)
-- 长亭牧云查杀： [https://stack.chaitin.com/security-challenge/webshell/index](https://stack.chaitin.com/security-challenge/webshell/index)
+- ~~长亭牧云查杀： [https://stack.chaitin.com/security-challenge/webshell/index](https://stack.chaitin.com/security-challenge/webshell/index)~~
 - 阿里云恶意文件检测平台：[https://ti.aliyun.com/#/webshell](https://ti.aliyun.com/#/webshell)
 - 默安·昆吾WebShell检测平台：[https://ti.moresec.cn/](https://ti.moresec.cn/)
-- 阿里伏魔引擎： [https://xz.aliyun.com/zues](https://xz.aliyun.com/zues) 
-- VirusTotal： [https://www.virustotal.com/gui/home/upload](https://www.virustotal.com/gui/home/upload) 
+- ~~阿里伏魔引擎： [https://xz.aliyun.com/zues](https://xz.aliyun.com/zues)~~
+- VirusTotal： [https://www.virustotal.com/gui/home/upload](https://www.virustotal.com/gui/home/upload)
 - 微步在线云沙箱： [https://s.threatbook.com/](https://s.threatbook.com/)
-- 河马WebShell查杀： [https://n.shellpub.com/](https://n.shellpub.com/) 
-- 百度WEBDIR+： [https://scanner.baidu.com/](https://scanner.baidu.com/) 
-- D盾： [http://www.d99net.net/](http://www.d99net.net/) 
-- 网站安全狗： [http://free.safedog.cn/website_safedog.html](http://free.safedog.cn/website_safedog.html) 
+- 河马WebShell查杀： [https://n.shellpub.com/](https://n.shellpub.com/)
+- ~~百度WEBDIR+： [https://scanner.baidu.com/](https://scanner.baidu.com/)~~
+- D盾： [http://www.d99net.net/](http://www.d99net.net/)
+- 网站安全狗： [http://free.safedog.cn/website_safedog.html](http://free.safedog.cn/website_safedog.html)
+
+注明：已经划线的是目前网站关闭或者暂时不征集WebShell样本，后续本项目会同步更新
 
 ## 1# 编码绕过
 
