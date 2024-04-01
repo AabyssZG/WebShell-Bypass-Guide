@@ -21,7 +21,7 @@
 
 本手册已经开源，开源地址：[WebShell-Bypass-Guide/PHP-Webshell-ByPass-Guide.md](/PHP-Webshell-ByPass-Guide.md)
 
-**手册版本号：V1.4.6-2024/01/06**
+**手册版本号：V1.4.8-2024/04/01**
 
 这是一本能让你从零开始学习PHP的WebShell免杀的手册，同时我会在内部群迭代更新
 
@@ -96,14 +96,10 @@
 
 [![Stargazers repo roster for @AabyssZG/WebShell-Bypass-Guide](http://reporoster.com/stars/AabyssZG/WebShell-Bypass-Guide)](https://github.com/AabyssZG/WebShell-Bypass-Guide/stargazers)
 
-
 ## Forkers
 
 [![Forkers repo roster for @AabyssZG/WebShell-Bypass-Guide](http://reporoster.com/forks/AabyssZG/WebShell-Bypass-Guide)](https://github.com/AabyssZG/WebShell-Bypass-Guide/network/members)
 
-
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=AabyssZG/WebShell-Bypass-Guide&type=Date)](https://star-history.com/#AabyssZG/WebShell-Bypass-Guide&Date)
-
-
