@@ -1194,7 +1194,7 @@ a=1&b=-phpinfo()-&c=2
 - 河马WebShell查杀： [https://n.shellpub.com/](https://n.shellpub.com/)
 - ~~百度WEBDIR+： [https://scanner.baidu.com/](https://scanner.baidu.com/)~~
 - D盾： [http://www.d99net.net/](http://www.d99net.net/)
-- 网站安全狗： [http://free.safedog.cn/website_safedog.html](http://free.safedog.cn/website_safedog.html)
+- ~~网站安全狗： [http://free.safedog.cn/website_safedog.html](http://free.safedog.cn/website_safedog.html)~~
 
 注明：已经划线的是目前网站关闭或者暂时不征集WebShell样本，后续本项目会同步更新
 
