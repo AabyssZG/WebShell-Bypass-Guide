@@ -1184,7 +1184,7 @@ a=1&b=-phpinfo()-&c=2
 ### 0.4 WebShell免杀测试
 
 - 渊龙Sec团队导航（上面啥都有）： [https://dh.aabyss.cn/](https://dh.aabyss.cn/)
-- 长亭百川云WebShell检测：[https://rivers.chaitin.cn/landing/guanshan](https://rivers.chaitin.cn/landing/guanshan)
+- 长亭百川云WebShell检测：[https://rivers.chaitin.cn/webShell](https://rivers.chaitin.cn/webShell)
 - ~~长亭牧云查杀： [https://stack.chaitin.com/security-challenge/webshell/index](https://stack.chaitin.com/security-challenge/webshell/index)~~
 - 阿里云恶意文件检测平台：[https://ti.aliyun.com/#/webshell](https://ti.aliyun.com/#/webshell)
 - 默安·昆吾WebShell检测平台：[https://ti.moresec.cn/](https://ti.moresec.cn/)
